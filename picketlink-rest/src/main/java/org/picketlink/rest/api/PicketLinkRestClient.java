@@ -2,6 +2,7 @@ package org.picketlink.rest.api;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.picketlink.identity.federation.api.saml.v2.request.SAML2Request;
@@ -133,6 +134,25 @@ public class PicketLinkRestClient {
             throw new PicketLinkRestClientException("Unable to find username via subject");
 
         return nameID.getValue();
+    }
+    
+    /**
+     * Given an assertion, try to get a list of roles
+     * @param assertion
+     * @param roleKeys a list of keys that represent roles in the statements in the assertion
+     * @return
+     * @throws PicketLinkRestClientException
+     */
+    public List<String> getRoles(AssertionType assertion, List<String> roleKeys) throws PicketLinkRestClientException{
+        return AssertionUtil.getRoles(assertion, roleKeys);
+    }
+    
+    /**
+     * Get the underlying {@code WebConversation}
+     * @return
+     */
+    public WebConversation getConversation(){
+        return webConversation;
     }
     
     private WebResponse prepareInitialPostRequestSAML20IDP(String idpURL, String serviceURL, String issuer) throws Exception{
